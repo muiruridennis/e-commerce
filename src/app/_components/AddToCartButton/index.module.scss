@@ -12,3 +12,8 @@
   visibility: hidden;
   opacity: 0;
 }
+.disabled {
+  color: #aaa;          
+  cursor: not-allowed;  
+  opacity: 0.5
+}

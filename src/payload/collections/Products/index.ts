@@ -12,6 +12,8 @@ import { beforeProductChange } from './hooks/beforeChange'
 import { deleteProductFromCarts } from './hooks/deleteProductFromCarts'
 import { revalidateProduct } from './hooks/revalidateProduct'
 import { ProductSelect } from './ui/ProductSelect'
+import { deleteProductFromWishlist } from './hooks/deleteProductFromWishlist'
+import { syncInventory, beforeInventoryChange } from '../Inventory/hooks/syncInventory'
 
 const Products: CollectionConfig = {
   slug: 'products',
@@ -25,10 +27,16 @@ const Products: CollectionConfig = {
     },
   },
   hooks: {
-    beforeChange: [beforeProductChange],
-    afterChange: [revalidateProduct],
+    beforeChange: [
+      beforeProductChange,
+      beforeInventoryChange
+    ],
+    afterChange: [
+      revalidateProduct,
+      syncInventory
+    ],
     afterRead: [populateArchiveBlock],
-    afterDelete: [deleteProductFromCarts],
+    afterDelete: [deleteProductFromCarts, deleteProductFromWishlist],
   },
   versions: {
     drafts: true,
@@ -74,7 +82,6 @@ const Products: CollectionConfig = {
             {
               name: 'layout',
               type: 'blocks',
-              required: true,
               blocks: [CallToAction, Content, MediaBlock, Archive],
             },
           ],
@@ -129,6 +136,17 @@ const Products: CollectionConfig = {
         position: 'sidebar',
       },
     },
+    { 
+      name: 'brand', 
+      type: 'relationship', 
+      relationTo: 'brands', 
+      hasMany: false, 
+    },
+    {
+      name: 'price',
+      type: 'number',
+      required: true,
+    },
     {
       name: 'relatedProducts',
       type: 'relationship',
@@ -142,6 +160,23 @@ const Products: CollectionConfig = {
         }
       },
     },
+    {
+      name: 'inventory',
+      type: 'relationship',
+      relationTo: 'inventory',
+      hasMany: false,
+      admin: {
+        position: 'sidebar',
+      },
+      filterOptions: ({ id }) => {
+        return {
+          id: {
+            not_in: [id],
+          },
+        }
+      },
+    },
+
     slugField(),
     {
       name: 'skipSync',
@@ -154,6 +189,6 @@ const Products: CollectionConfig = {
       },
     },
   ],
-}
+};
 
 export default Products

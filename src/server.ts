@@ -2,6 +2,8 @@ import dotenv from 'dotenv'
 import next from 'next'
 import nextBuild from 'next/dist/build'
 import path from 'path'
+import mpesaPaymentRoute from '../src/Mpesa/routes/mpesaPayment'
+import mpesaCallbackRoute from '../src/Mpesa/routes/mpesaCallback'
 
 dotenv.config({
   path: path.resolve(__dirname, '../.env'),
@@ -45,6 +47,8 @@ const start = async (): Promise<void> => {
   })
 
   const nextHandler = nextApp.getRequestHandler()
+  app.use('/mpesa/payment', mpesaPaymentRoute)
+  app.use('/mpesa/callback', mpesaCallbackRoute)
 
   app.use((req, res) => nextHandler(req, res))
 

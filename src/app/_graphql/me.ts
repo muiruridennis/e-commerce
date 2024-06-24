@@ -6,8 +6,9 @@ export const ME_QUERY = `query {
       id
       email
       name
-      ${CART}
+      ${CART}      
       roles
+      wishlist
     }
     exp
   }

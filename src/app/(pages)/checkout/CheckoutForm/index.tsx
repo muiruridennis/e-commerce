@@ -4,7 +4,7 @@ import React, { useCallback } from 'react'
 import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { useRouter } from 'next/navigation'
 
-import { Order } from '../../../../payload/payload-types'
+import { Inventory, Order } from '../../../../payload/payload-types'
 import { Button } from '../../../_components/Button'
 import { Message } from '../../../_components/Message'
 import { priceFromJSON } from '../../../_components/Price'
@@ -19,6 +19,7 @@ export const CheckoutForm: React.FC<{}> = () => {
   const [isLoading, setIsLoading] = React.useState(false)
   const router = useRouter()
   const { cart, cartTotal } = useCart()
+  console.log(cart)
 
   const handleSubmit = useCallback(
     async e => {
@@ -75,7 +76,6 @@ export const CheckoutForm: React.FC<{}> = () => {
               error?: string
               doc: Order
             } = await orderReq.json()
-
             if (errorFromRes) throw new Error(errorFromRes)
 
             router.push(`/order-confirmation?order_id=${doc.id}`)
@@ -90,6 +90,41 @@ export const CheckoutForm: React.FC<{}> = () => {
         const msg = err instanceof Error ? err.message : 'Something went wrong.'
         setError(`Error while submitting payment: ${msg}`)
         setIsLoading(false)
+      }
+
+      const cartItems = cart?.items || [];
+      for (const { product, quantity } of cartItems) {
+        const productId = typeof product === 'string' ? product : product.id;
+        const inventoryId = typeof product === 'object' && product.inventory ? product.inventory.id : '';
+
+        if (!inventoryId) {
+          console.error(`Inventory ID not found for product ${productId}`);
+          continue; // Skip to the next product if inventory ID is not available
+        }
+
+        const stockQuantity = typeof product === 'object' && product.inventory ? product.inventory.stockQuantity || 0 : 0;
+
+        try {
+          const updateInventoryResponse = await fetch(
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/inventory/${inventoryId}`,
+            {
+              method: 'PATCH',
+              credentials: 'include',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                stockQuantity: stockQuantity - quantity,
+              }),
+            }
+          );
+
+          if (!updateInventoryResponse.ok) {
+            throw new Error(updateInventoryResponse.statusText || 'Inventory update failed');
+          }
+        } catch (err) {
+          console.error(`Error updating inventory for product ${productId}: ${err.message}`);
+        }
       }
     },
     [stripe, elements, router, cart, cartTotal],

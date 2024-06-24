@@ -13,7 +13,7 @@
   flex-direction: column;
   gap: calc(var(--base) / 2);
 
-  & > * {
+  &>* {
     margin: 0;
   }
 }
@@ -44,7 +44,7 @@
   flex-direction: column;
   gap: calc(var(--base) / 2);
 
-  & > * {
+  &>* {
     margin: 0;
   }
 }
@@ -120,4 +120,3 @@
   flex-wrap: wrap;
   gap: calc(var(--base) / 2);
 }
-

@@ -1,0 +1,9 @@
+@import '../../_css/queries.scss';
+
+.about {
+    text-align: justify;
+
+    @include mid-break {
+        gap: 60px;
+    }
+}
