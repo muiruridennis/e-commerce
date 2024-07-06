@@ -4,10 +4,41 @@
   display: flex;
   flex-direction: column;
   gap: var(--base);
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-weight: bold;
+  color: #333;
+}
+
+.input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+
+  &:focus {
+    border-color: var(--color-gray-500);
+    outline: none;
+  }
 }
 
 .actions {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--base);
+  gap: 12px;
+  justify-content: space-between;
 }

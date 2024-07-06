@@ -90,7 +90,7 @@ export default buildConfig({
   }),
   // database-adapter-config-end
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL,
-  collections: [Pages, Products, Orders, Media, Categories, Users, Payments, Inventory, BackInStockNotifications, Brands, FormSubmissions ],
+  collections: [Pages, Products, Orders, Media, Categories, Users, Payments, Inventory, BackInStockNotifications, Brands, FormSubmissions],
   globals: [Settings, Header, Footer],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
@@ -121,6 +121,7 @@ export default buildConfig({
       method: 'get',
       handler: productsProxy,
     },
+   
   ],
   plugins: [
     stripePlugin({

@@ -33,7 +33,7 @@ export const PRODUCT = `
         }
         priceJSON
         enablePaywall
-       
+        price
         relatedProducts {
           id
           slug

@@ -225,27 +225,26 @@ export const CartProvider = props => {
 
   // calculate the new cart total whenever the cart changes
   useEffect(() => {
-    if (!hasInitialized) return
-
+    if (!hasInitialized.current) return;
     const newTotal =
       cart?.items?.reduce((acc, item) => {
         return (
           acc +
           (typeof item.product === 'object'
-            ? JSON.parse(item?.product?.priceJSON || '{}')?.data?.[0]?.unit_amount *
-              (typeof item?.quantity === 'number' ? item?.quantity : 0)
+            ? item?.product?.price * (typeof item?.quantity === 'number' ? item?.quantity : 0)
             : 0)
-        )
-      }, 0) || 0
+        );
+      }, 0) || 0;
 
     setTotal({
-      formatted: (newTotal / 100).toLocaleString('en-US', {
+      formatted: (newTotal ).toLocaleString('en-US', {
         style: 'currency',
-        currency: 'USD',
+        currency: 'KSH',
       }),
       raw: newTotal,
-    })
-  }, [cart, hasInitialized])
+    });
+  }, [cart, hasInitialized]);
+
 
   return (
     <Context.Provider

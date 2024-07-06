@@ -1,13 +1,10 @@
-import type { CollectionConfig } from 'payload/types'
-
-import { admins } from '../../access/admins'
-import { adminsOrLoggedIn } from '../../access/adminsOrLoggedIn'
-import { adminsOrOrderedBy } from './access/adminsOrOrderedBy'
-import { clearUserCart } from './hooks/clearUserCart'
-import { populateOrderedBy } from './hooks/populateOrderedBy'
-import { updateUserPurchases } from './hooks/updateUserPurchases'
-import { LinkToPaymentIntent } from './ui/LinkToPaymentIntent'
-
+import { CollectionConfig } from 'payload/types';
+import { admins } from '../../access/admins';
+import { adminsOrLoggedIn } from '../../access/adminsOrLoggedIn';
+import { adminsOrOrderedBy } from './access/adminsOrOrderedBy';
+import { clearUserCart } from './hooks/clearUserCart';
+import { populateOrderedBy } from './hooks/populateOrderedBy';
+import { updateUserPurchases } from './hooks/updateUserPurchases';
 export const Orders: CollectionConfig = {
   slug: 'orders',
   admin: {
@@ -34,15 +31,22 @@ export const Orders: CollectionConfig = {
       },
     },
     {
-      name: 'stripePaymentIntentID',
-      label: 'Stripe Payment Intent ID',
-      type: 'text',
-      admin: {
-        position: 'sidebar',
-        components: {
-          Field: LinkToPaymentIntent,
-        },
-      },
+      name: 'payment',
+      label: 'Payment',
+      type: 'relationship',
+      relationTo: 'payments',
+    },
+    {
+      name: 'status',
+      label: 'Status',
+      type: 'select',
+      options: [
+        { label: 'Pending', value: 'pending' },
+        { label: 'Completed', value: 'completed' },
+        { label: 'Failed', value: 'failed' },
+      ],
+      defaultValue: 'pending',
+      required: true,
     },
     {
       name: 'total',
@@ -73,4 +77,4 @@ export const Orders: CollectionConfig = {
       ],
     },
   ],
-}
+};

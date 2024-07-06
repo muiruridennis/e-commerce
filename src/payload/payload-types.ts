@@ -436,7 +436,8 @@ export interface Inventory {
 export interface Order {
   id: string;
   orderedBy?: (string | null) | User;
-  stripePaymentIntentID?: string | null;
+  payment?: (string | null) | Payment;
+  status: 'pending' | 'completed' | 'failed';
   total: number;
   items?:
     | {
@@ -475,12 +476,13 @@ export interface User {
 }
 export interface Payment {
   id: string;
-  amount: number;
+  order: string | Order;
   phoneNumber: string;
-  transactionId?: string | null;
-  status?: ('pending' | 'completed' | 'failed') | null;
-  user: string | User;
-  product: string | Product;
+  status: 'pending' | 'completed' | 'failed';
+  amount: number;
+  mpesaReceiptNumber?: string | null;
+  checkoutRequestId?: string | null;
+  paymentMethod: 'Mpesa' | 'cash' | 'others';
   updatedAt: string;
   createdAt: string;
 }

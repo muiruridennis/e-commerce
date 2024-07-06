@@ -62,6 +62,8 @@ export const CartPage: React.FC<{
                     <p>Quantity</p>
                   </div>
                   <p className={classes.headersubtotal}>Subtotal</p>
+                  <p></p>
+                  <p></p>
                 </div>
                 {/* CART ITEM LIST */}
                 <ul className={classes.itemsList}>

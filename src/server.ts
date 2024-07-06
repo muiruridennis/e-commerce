@@ -1,9 +1,9 @@
 import dotenv from 'dotenv'
 import next from 'next'
+
 import nextBuild from 'next/dist/build'
 import path from 'path'
-import mpesaPaymentRoute from '../src/Mpesa/routes/mpesaPayment'
-import mpesaCallbackRoute from '../src/Mpesa/routes/mpesaCallback'
+
 
 dotenv.config({
   path: path.resolve(__dirname, '../.env'),
@@ -13,9 +13,11 @@ import express from 'express'
 import payload from 'payload'
 
 import { seed } from './payload/seed'
+import mpesaRoute from "./Routes/mpesa";
 
 const app = express()
 const PORT = process.env.PORT || 3000
+// app.use(express.json());
 
 const start = async (): Promise<void> => {
   await payload.init({
@@ -25,6 +27,8 @@ const start = async (): Promise<void> => {
       payload.logger.info(`Payload Admin URL: ${payload.getAdminURL()}`)
     },
   })
+
+  app.use('/api', mpesaRoute);
 
   if (process.env.PAYLOAD_SEED === 'true') {
     await seed(payload)
@@ -47,8 +51,6 @@ const start = async (): Promise<void> => {
   })
 
   const nextHandler = nextApp.getRequestHandler()
-  app.use('/mpesa/payment', mpesaPaymentRoute)
-  app.use('/mpesa/callback', mpesaCallbackRoute)
 
   app.use((req, res) => nextHandler(req, res))
 
@@ -62,3 +64,4 @@ const start = async (): Promise<void> => {
 }
 
 start()
+

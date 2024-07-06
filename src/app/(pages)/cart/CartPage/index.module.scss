@@ -16,7 +16,7 @@
 
 .header {
   display: grid;
-  grid-template-columns: 100px 2fr 1fr;
+  grid-template-columns: 100px 2fr 1fr ;
   gap: 24px;
   margin-bottom: 8px;
 
@@ -31,7 +31,7 @@
 }
 
 .headersubtotal {
-  text-align: end;
+  text-align:center;
 }
 
 .itemsList {

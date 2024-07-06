@@ -1,8 +1,7 @@
 import type { AfterChangeHook, BeforeChangeHook } from 'payload/dist/collections/config/types';
 
 export const syncInventory: AfterChangeHook = async ({ doc, req }) => {
-  console.log('Executing syncInventory hook...', doc);
-  const { id, inventory } = doc;
+  const {inventory } = doc;
 
   if (inventory) {
     try {
@@ -25,7 +24,6 @@ export const syncInventory: AfterChangeHook = async ({ doc, req }) => {
       console.error('Error syncing inventory:', error);
     }
   }
-  console.log('syncInventory hook completed.', doc);
 };
 
 
