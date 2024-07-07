@@ -28,7 +28,6 @@ export const syncInventory: AfterChangeHook = async ({ doc, req }) => {
 
 
 export const beforeInventoryChange: BeforeChangeHook = async ({ data, req }) => {
-  console.log('Executing beforeInventoryChange hook...');
   if (data.inventory) {
     try {
       const inventoryData = await req.payload.findByID({

@@ -14,6 +14,7 @@ import { revalidateProduct } from './hooks/revalidateProduct'
 import { ProductSelect } from './ui/ProductSelect'
 import { deleteProductFromWishlist } from './hooks/deleteProductFromWishlist'
 import { syncInventory, beforeInventoryChange } from '../Inventory/hooks/syncInventory'
+// import notifyAdmin from '../Notifications/hooks/notifyAdmin'
 
 const Products: CollectionConfig = {
   slug: 'products',
@@ -29,7 +30,8 @@ const Products: CollectionConfig = {
   hooks: {
     beforeChange: [
       beforeProductChange,
-      beforeInventoryChange
+      beforeInventoryChange,
+      // notifyAdmin
     ],
     afterChange: [
       revalidateProduct,

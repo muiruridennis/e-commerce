@@ -88,7 +88,6 @@ export const callback = async (req, res) => {
                     phoneNumber: `${mpesaTransaction.phoneNumber}`,
                     checkoutRequestId: mpesaTransaction.checkoutRequestID,
                     mpesaReceiptNumber: mpesaTransaction.mpesaReceiptNumber,
-                    paymentMethod: 'Mpesa',
                 },
             });
             console.log(" payment saved to the database")
@@ -98,7 +97,9 @@ export const callback = async (req, res) => {
                     id: orderId,
                     data: {
                         payment: payment.id as unknown as string, // Ensure TypeScript understands this is a string
-                        status:'completed'
+                        status:'completed',
+                        paymentMethod: 'Mpesa',
+
                     },
                     depth: 2,
                 });

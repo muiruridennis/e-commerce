@@ -5,12 +5,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 import { Settings } from '../../../../payload/payload-types'
-import { Button } from '../../../_components/Button'
-import { LoadingShimmer } from '../../../_components/LoadingShimmer'
 import { useAuth } from '../../../_providers/Auth'
 import { useCart } from '../../../_providers/Cart'
-import { useTheme } from '../../../_providers/Theme'
-import cssVariables from '../../../cssVariables'
 import { CheckoutForm } from '../CheckoutForm'
 import { CheckoutItem } from '../CheckoutItem'
 
@@ -25,8 +21,6 @@ export const CheckoutPage: React.FC<{
 
   const { user } = useAuth()
   const router = useRouter()
-  const [error, setError] = React.useState<string | null>(null)
-  const { theme } = useTheme()
 
   const { cart, cartIsEmpty, cartTotal } = useCart()
 
@@ -98,8 +92,6 @@ export const CheckoutPage: React.FC<{
           </ul>
         </div>
       )}
-      <h3 className={classes.payment}>Payment Details</h3>
-      {error && <p>{`Error: ${error}`}</p>}
       <CheckoutForm />
     </Fragment>
   )

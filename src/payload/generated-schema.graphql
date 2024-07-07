@@ -5017,6 +5017,7 @@ type Order {
   id: String
   orderedBy: User
   payment: Payment
+  paymentMethod: Order_paymentMethod!
   status: Order_status!
   total: Float!
   items: [Order_Items!]
@@ -5082,7 +5083,6 @@ type Payment {
   amount: Float!
   mpesaReceiptNumber: String
   checkoutRequestId: String
-  paymentMethod: Payment_paymentMethod!
   updatedAt: DateTime
   createdAt: DateTime
 }
@@ -5093,9 +5093,9 @@ enum Payment_status {
   failed
 }
 
-enum Payment_paymentMethod {
+enum Order_paymentMethod {
   Mpesa
-  cash
+  CashOnDelivery
   others
 }
 
@@ -5129,6 +5129,7 @@ type Orders {
 input Order_where {
   orderedBy: Order_orderedBy_operator
   payment: Order_payment_operator
+  paymentMethod: Order_paymentMethod_operator
   status: Order_status_operator
   total: Order_total_operator
   items__product: Order_items__product_operator
@@ -5158,6 +5159,20 @@ input Order_payment_operator {
   not_in: [JSON]
   all: [JSON]
   exists: Boolean
+}
+
+input Order_paymentMethod_operator {
+  equals: Order_paymentMethod_Input
+  not_equals: Order_paymentMethod_Input
+  in: [Order_paymentMethod_Input]
+  not_in: [Order_paymentMethod_Input]
+  all: [Order_paymentMethod_Input]
+}
+
+enum Order_paymentMethod_Input {
+  Mpesa
+  CashOnDelivery
+  others
 }
 
 input Order_status_operator {
@@ -5258,6 +5273,7 @@ input Order_id_operator {
 input Order_where_and {
   orderedBy: Order_orderedBy_operator
   payment: Order_payment_operator
+  paymentMethod: Order_paymentMethod_operator
   status: Order_status_operator
   total: Order_total_operator
   items__product: Order_items__product_operator
@@ -5274,6 +5290,7 @@ input Order_where_and {
 input Order_where_or {
   orderedBy: Order_orderedBy_operator
   payment: Order_payment_operator
+  paymentMethod: Order_paymentMethod_operator
   status: Order_status_operator
   total: Order_total_operator
   items__product: Order_items__product_operator
@@ -5298,6 +5315,7 @@ type ordersDocAccess {
 type OrdersDocAccessFields {
   orderedBy: OrdersDocAccessFields_orderedBy
   payment: OrdersDocAccessFields_payment
+  paymentMethod: OrdersDocAccessFields_paymentMethod
   status: OrdersDocAccessFields_status
   total: OrdersDocAccessFields_total
   items: OrdersDocAccessFields_items
@@ -5348,6 +5366,29 @@ type OrdersDocAccessFields_payment_Update {
 }
 
 type OrdersDocAccessFields_payment_Delete {
+  permission: Boolean!
+}
+
+type OrdersDocAccessFields_paymentMethod {
+  create: OrdersDocAccessFields_paymentMethod_Create
+  read: OrdersDocAccessFields_paymentMethod_Read
+  update: OrdersDocAccessFields_paymentMethod_Update
+  delete: OrdersDocAccessFields_paymentMethod_Delete
+}
+
+type OrdersDocAccessFields_paymentMethod_Create {
+  permission: Boolean!
+}
+
+type OrdersDocAccessFields_paymentMethod_Read {
+  permission: Boolean!
+}
+
+type OrdersDocAccessFields_paymentMethod_Update {
+  permission: Boolean!
+}
+
+type OrdersDocAccessFields_paymentMethod_Delete {
   permission: Boolean!
 }
 
@@ -7231,7 +7272,6 @@ input Payment_where {
   amount: Payment_amount_operator
   mpesaReceiptNumber: Payment_mpesaReceiptNumber_operator
   checkoutRequestId: Payment_checkoutRequestId_operator
-  paymentMethod: Payment_paymentMethod_operator
   updatedAt: Payment_updatedAt_operator
   createdAt: Payment_createdAt_operator
   id: Payment_id_operator
@@ -7302,20 +7342,6 @@ input Payment_checkoutRequestId_operator {
   exists: Boolean
 }
 
-input Payment_paymentMethod_operator {
-  equals: Payment_paymentMethod_Input
-  not_equals: Payment_paymentMethod_Input
-  in: [Payment_paymentMethod_Input]
-  not_in: [Payment_paymentMethod_Input]
-  all: [Payment_paymentMethod_Input]
-}
-
-enum Payment_paymentMethod_Input {
-  Mpesa
-  cash
-  others
-}
-
 input Payment_updatedAt_operator {
   equals: DateTime
   not_equals: DateTime
@@ -7356,7 +7382,6 @@ input Payment_where_and {
   amount: Payment_amount_operator
   mpesaReceiptNumber: Payment_mpesaReceiptNumber_operator
   checkoutRequestId: Payment_checkoutRequestId_operator
-  paymentMethod: Payment_paymentMethod_operator
   updatedAt: Payment_updatedAt_operator
   createdAt: Payment_createdAt_operator
   id: Payment_id_operator
@@ -7371,7 +7396,6 @@ input Payment_where_or {
   amount: Payment_amount_operator
   mpesaReceiptNumber: Payment_mpesaReceiptNumber_operator
   checkoutRequestId: Payment_checkoutRequestId_operator
-  paymentMethod: Payment_paymentMethod_operator
   updatedAt: Payment_updatedAt_operator
   createdAt: Payment_createdAt_operator
   id: Payment_id_operator
@@ -7394,7 +7418,6 @@ type PaymentsDocAccessFields {
   amount: PaymentsDocAccessFields_amount
   mpesaReceiptNumber: PaymentsDocAccessFields_mpesaReceiptNumber
   checkoutRequestId: PaymentsDocAccessFields_checkoutRequestId
-  paymentMethod: PaymentsDocAccessFields_paymentMethod
   updatedAt: PaymentsDocAccessFields_updatedAt
   createdAt: PaymentsDocAccessFields_createdAt
 }
@@ -7534,29 +7557,6 @@ type PaymentsDocAccessFields_checkoutRequestId_Update {
 }
 
 type PaymentsDocAccessFields_checkoutRequestId_Delete {
-  permission: Boolean!
-}
-
-type PaymentsDocAccessFields_paymentMethod {
-  create: PaymentsDocAccessFields_paymentMethod_Create
-  read: PaymentsDocAccessFields_paymentMethod_Read
-  update: PaymentsDocAccessFields_paymentMethod_Update
-  delete: PaymentsDocAccessFields_paymentMethod_Delete
-}
-
-type PaymentsDocAccessFields_paymentMethod_Create {
-  permission: Boolean!
-}
-
-type PaymentsDocAccessFields_paymentMethod_Read {
-  permission: Boolean!
-}
-
-type PaymentsDocAccessFields_paymentMethod_Update {
-  permission: Boolean!
-}
-
-type PaymentsDocAccessFields_paymentMethod_Delete {
   permission: Boolean!
 }
 
@@ -12001,6 +12001,7 @@ type ordersAccess {
 type OrdersFields {
   orderedBy: OrdersFields_orderedBy
   payment: OrdersFields_payment
+  paymentMethod: OrdersFields_paymentMethod
   status: OrdersFields_status
   total: OrdersFields_total
   items: OrdersFields_items
@@ -12051,6 +12052,29 @@ type OrdersFields_payment_Update {
 }
 
 type OrdersFields_payment_Delete {
+  permission: Boolean!
+}
+
+type OrdersFields_paymentMethod {
+  create: OrdersFields_paymentMethod_Create
+  read: OrdersFields_paymentMethod_Read
+  update: OrdersFields_paymentMethod_Update
+  delete: OrdersFields_paymentMethod_Delete
+}
+
+type OrdersFields_paymentMethod_Create {
+  permission: Boolean!
+}
+
+type OrdersFields_paymentMethod_Read {
+  permission: Boolean!
+}
+
+type OrdersFields_paymentMethod_Update {
+  permission: Boolean!
+}
+
+type OrdersFields_paymentMethod_Delete {
   permission: Boolean!
 }
 
@@ -13359,7 +13383,6 @@ type PaymentsFields {
   amount: PaymentsFields_amount
   mpesaReceiptNumber: PaymentsFields_mpesaReceiptNumber
   checkoutRequestId: PaymentsFields_checkoutRequestId
-  paymentMethod: PaymentsFields_paymentMethod
   updatedAt: PaymentsFields_updatedAt
   createdAt: PaymentsFields_createdAt
 }
@@ -13499,29 +13522,6 @@ type PaymentsFields_checkoutRequestId_Update {
 }
 
 type PaymentsFields_checkoutRequestId_Delete {
-  permission: Boolean!
-}
-
-type PaymentsFields_paymentMethod {
-  create: PaymentsFields_paymentMethod_Create
-  read: PaymentsFields_paymentMethod_Read
-  update: PaymentsFields_paymentMethod_Update
-  delete: PaymentsFields_paymentMethod_Delete
-}
-
-type PaymentsFields_paymentMethod_Create {
-  permission: Boolean!
-}
-
-type PaymentsFields_paymentMethod_Read {
-  permission: Boolean!
-}
-
-type PaymentsFields_paymentMethod_Update {
-  permission: Boolean!
-}
-
-type PaymentsFields_paymentMethod_Delete {
   permission: Boolean!
 }
 
@@ -15675,11 +15675,18 @@ enum ProductUpdate__status_MutationInput {
 input mutationOrderInput {
   orderedBy: String
   payment: String
+  paymentMethod: Order_paymentMethod_MutationInput!
   status: Order_status_MutationInput!
   total: Float!
   items: [mutationOrder_ItemsInput]
   updatedAt: String
   createdAt: String
+}
+
+enum Order_paymentMethod_MutationInput {
+  Mpesa
+  CashOnDelivery
+  others
 }
 
 enum Order_status_MutationInput {
@@ -15698,11 +15705,18 @@ input mutationOrder_ItemsInput {
 input mutationOrderUpdateInput {
   orderedBy: String
   payment: String
+  paymentMethod: OrderUpdate_paymentMethod_MutationInput
   status: OrderUpdate_status_MutationInput
   total: Float
   items: [mutationOrderUpdate_ItemsInput]
   updatedAt: String
   createdAt: String
+}
+
+enum OrderUpdate_paymentMethod_MutationInput {
+  Mpesa
+  CashOnDelivery
+  others
 }
 
 enum OrderUpdate_status_MutationInput {
@@ -15895,7 +15909,6 @@ input mutationPaymentInput {
   amount: Float!
   mpesaReceiptNumber: String
   checkoutRequestId: String
-  paymentMethod: Payment_paymentMethod_MutationInput!
   updatedAt: String
   createdAt: String
 }
@@ -15906,12 +15919,6 @@ enum Payment_status_MutationInput {
   failed
 }
 
-enum Payment_paymentMethod_MutationInput {
-  Mpesa
-  cash
-  others
-}
-
 input mutationPaymentUpdateInput {
   order: String
   phoneNumber: String
@@ -15919,7 +15926,6 @@ input mutationPaymentUpdateInput {
   amount: Float
   mpesaReceiptNumber: String
   checkoutRequestId: String
-  paymentMethod: PaymentUpdate_paymentMethod_MutationInput
   updatedAt: String
   createdAt: String
 }
@@ -15928,12 +15934,6 @@ enum PaymentUpdate_status_MutationInput {
   pending
   completed
   failed
-}
-
-enum PaymentUpdate_paymentMethod_MutationInput {
-  Mpesa
-  cash
-  others
 }
 
 input mutationInventoryInput {

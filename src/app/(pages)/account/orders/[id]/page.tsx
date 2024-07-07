@@ -42,7 +42,6 @@ export default async function Order({ params: { id } }) {
   if (!order) {
     notFound()
   }
-
   return (
     <div>
       <h5>
@@ -51,7 +50,9 @@ export default async function Order({ params: { id } }) {
       </h5>
       <div className={classes.itemMeta}>
         <p>{`ID: ${order.id}`}</p>
-        <p>{`Mpesa Trans Number: ${order?.payment?.mpesaReceiptNumber}`}</p>
+        <p>{`Payment Method : ${order.paymentMethod}`}</p>
+        {order.paymentMethod === "Mpesa" && (<p>{`Mpesa Trans Number: ${order?.payment?.mpesaReceiptNumber}`}</p>)}
+        <p>{`Status : ${order.status}`}</p>
         <p>{`Ordered On: ${formatDateTime(order.createdAt)}`}</p>
         <p className={classes.total}>
           {'Total: '}

@@ -65,18 +65,6 @@ const Payments: CollectionConfig = {
         position: 'sidebar',
       },
     },
-    {
-      name: 'paymentMethod',
-      label: 'Payment Method',
-      type: 'select',
-      options: [
-        { label: 'Mpesa', value: 'Mpesa' },
-        { label: 'Cash', value: 'cash' },
-        { label: 'Others', value: 'others' },
-      ],
-      defaultValue: 'Mpesa',
-      required: true,
-    },
   ],
 };
 export default Payments;

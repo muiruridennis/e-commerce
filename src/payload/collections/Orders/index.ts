@@ -37,6 +37,18 @@ export const Orders: CollectionConfig = {
       relationTo: 'payments',
     },
     {
+      name: 'paymentMethod',
+      label: 'Payment Method',
+      type: 'select',
+      options: [
+        { label: 'Mpesa', value: 'Mpesa' },
+        { label: 'Cash On Delivery', value: 'CashOnDelivery' },
+        { label: 'Others', value: 'others' },
+      ],
+      defaultValue: 'Mpesa',
+      required: true,
+    },
+    {
       name: 'status',
       label: 'Status',
       type: 'select',

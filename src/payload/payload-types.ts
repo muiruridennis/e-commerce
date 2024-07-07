@@ -437,6 +437,7 @@ export interface Order {
   id: string;
   orderedBy?: (string | null) | User;
   payment?: (string | null) | Payment;
+  paymentMethod: 'Mpesa' | 'CashOnDelivery' | 'others';
   status: 'pending' | 'completed' | 'failed';
   total: number;
   items?:
@@ -482,7 +483,6 @@ export interface Payment {
   amount: number;
   mpesaReceiptNumber?: string | null;
   checkoutRequestId?: string | null;
-  paymentMethod: 'Mpesa' | 'cash' | 'others';
   updatedAt: string;
   createdAt: string;
 }

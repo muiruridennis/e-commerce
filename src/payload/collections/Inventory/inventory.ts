@@ -3,6 +3,7 @@ import { logStockHistory } from './hooks/logStockHistory';
 
 import type { CollectionConfig } from 'payload/types';
 import notifyBackInStock from '../BackInStockNotifications/hooks/notifyBackInStock';
+// import checkLowStock from '../Notifications/hooks/checkLowStock';
 const Inventory: CollectionConfig = {
   slug: 'inventory',
   admin: {
@@ -12,7 +13,9 @@ const Inventory: CollectionConfig = {
     read: () => true
   },
   hooks:{
-    beforeChange: [updateStockStatus, logStockHistory],
+    beforeChange: [updateStockStatus, logStockHistory,
+      //  checkLowStock
+      ],
     afterChange: [notifyBackInStock],
   },
 
