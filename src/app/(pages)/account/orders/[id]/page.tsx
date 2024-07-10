@@ -3,7 +3,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
-import { Order } from '../../../../../payload/payload-types'
+import { Order, Payment } from '../../../../../payload/payload-types'
 import { HR } from '../../../../_components/HR'
 import { Media } from '../../../../_components/Media'
 import { Price } from '../../../../_components/Price'
@@ -38,6 +38,10 @@ export default async function Order({ params: { id } }) {
   } catch (error) {
     console.error(error) // eslint-disable-line no-console
   }
+  let mpesaReceiptNumber: string | undefined;
+  if (order.paymentMethod === "Mpesa" && order.payment && typeof order.payment !== 'string') {
+    mpesaReceiptNumber = (order.payment as Payment).mpesaReceiptNumber;
+  }
 
   if (!order) {
     notFound()
@@ -51,7 +55,7 @@ export default async function Order({ params: { id } }) {
       <div className={classes.itemMeta}>
         <p>{`ID: ${order.id}`}</p>
         <p>{`Payment Method : ${order.paymentMethod}`}</p>
-        {order.paymentMethod === "Mpesa" && (<p>{`Mpesa Trans Number: ${order?.payment?.mpesaReceiptNumber}`}</p>)}
+        {order.paymentMethod === "Mpesa" && (<p>{`Mpesa Trans Number:  ${mpesaReceiptNumber}`}</p>)}
         <p>{`Status : ${order.status}`}</p>
         <p>{`Ordered On: ${formatDateTime(order.createdAt)}`}</p>
         <p className={classes.total}>

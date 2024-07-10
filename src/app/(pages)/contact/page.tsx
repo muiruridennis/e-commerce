@@ -60,11 +60,9 @@ const ContactPage = async () => {
                         className="google-iframe"
                         title="Google Map"
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3165.35721207169!2d126.9525508511284!3d37.49949233562292!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca1d7daa43d7b%3A0x101547c9adb8137c!2z7ISc7Jq467O47LmY6rO8!5e0!3m2!1sko!2sus!4v1603125402556!5m2!1sko!2sus"
-                        frameBorder="0"
                         style={{ border: 0 }}
                         allowFullScreen
                         aria-hidden="false"
-                        tabIndex="0"
                     />
                 </div>
             </div>

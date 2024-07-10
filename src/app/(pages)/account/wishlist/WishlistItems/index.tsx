@@ -8,6 +8,7 @@ import { AddToCartButton } from '../../../../_components/AddToCartButton'
 import { RemoveFromWishButton } from '../../../../_components/RemoveFromWishButton'
 import { useWishlist } from '../../../../_providers/Wishlist'
 import { LoadingShimmer } from '../../../../_components/LoadingShimmer'
+import { Product } from '../../../../../payload/payload-types'
 
 export default function WishlistItems() {
   const { wishlist, hasInitializedWishlist, wishlistIsEmpty } = useWishlist()
@@ -41,11 +42,10 @@ export default function WishlistItems() {
                       </tr>
                     )
                   } else {
-                    const product = wishlistItem?.product
+                    const product = wishlistItem?.product as Product
                     const productTitle = product?.title ?? 'Unknown Product'
                     const productSlug = product?.slug
                     const productImage = product?.meta?.image
-                    const productPrice = product?.price ?? 0
 
                     return (
                       <tr key={index} className={classes.wishlistItem}>

@@ -3,7 +3,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
-import { Order } from '../../../../payload/payload-types'
+import { Order, Payment } from '../../../../payload/payload-types'
 import { Button } from '../../../_components/Button'
 import { Gutter } from '../../../_components/Gutter'
 import { HR } from '../../../_components/HR'
@@ -44,7 +44,7 @@ export default async function Order({ params: { id } }) {
   if (!order) {
     notFound()
   }
-  console.log(order)
+  const mpesaReceiptNumber = (order.payment as Payment).mpesaReceiptNumber;
 
   return (
     <Gutter className={classes.orders}>
@@ -54,7 +54,7 @@ export default async function Order({ params: { id } }) {
       </h1>
       <div className={classes.itemMeta}>
         <p>{`ID: ${order.id}`}</p>
-        <p>{`Payment Intent: ${order.payment.mpesaReceiptNumber}`}</p>
+        <p>{`Payment Intent: ${mpesaReceiptNumber}`}</p>
         <p>{`Ordered On: ${formatDateTime(order.createdAt)}`}</p>
         <p className={classes.total}>
           {'Total: '}

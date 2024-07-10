@@ -1,6 +1,7 @@
+import payload from 'payload';
 import type { AfterChangeHook } from 'payload/dist/collections/config/types';
 import generateEmailHTML from '../email/generateEmailHTML';
-import payload from 'payload';
+import { Product, Media } from '../../../payload-types';
 
 const notifyBackInStock: AfterChangeHook = async ({ previousDoc, doc }) => {
   if (previousDoc.stockStatus === 'outOfStock' && doc.stockStatus === 'inStock') {
@@ -12,15 +13,17 @@ const notifyBackInStock: AfterChangeHook = async ({ previousDoc, doc }) => {
           notified: { equals: false },
         },
       });
-      console.log("notifications: ", notifications)
 
       for (const notification of notifications.docs) {
         try {
-          const product = notification.product?.data || notification.product;
+          const product = notification.product as Product;
           const productTitle = product?.title;
           const productSlug = product?.slug;
-          const productImageUrl = product?.meta?.image?.url
-
+          // Check if product.meta.image is a Media object
+          let productImageUrl: string | undefined;
+          if (product?.meta?.image && typeof product.meta.image !== 'string') {
+            productImageUrl = (product.meta.image as Media).url;
+          }
           if (!productTitle || !productSlug) {
             console.error('Notification data missing product details:', notification);
             continue; // Skip this notification if product data is missing

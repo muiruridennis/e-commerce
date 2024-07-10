@@ -9,11 +9,14 @@ import { AddToCartButton } from "../AddToCartButton";
 import { AddToWishlistButton } from "../AddToWishlistButton";
 
 type Product = {
-  name: string;
+  id: string
+  title: string;
   url: string;
   description: string;
   offerPercentage: number;
-  originalPrice: number;
+  price: number;
+  updatedAt:string,
+  createdAt: string
 
 }[];
 
@@ -22,25 +25,34 @@ const ProductSlider = (props) => {
 
   const products: Product = [
     {
-      name: 'Apple Watch Series',
+      id:"ytytyyty",
+      title: 'Apple Watch Series',
       url: "/assets/products/AppleWatchSeries.jpg",
       description: "Stay connected and healthy with the latest Apple Watch Series.",
-      originalPrice: 399,
+      price: 399,
       offerPercentage: 20,
+      updatedAt: " upcoming",
+      createdAt: " January"
     },
     {
-      name: 'Apple Watch Series 7',
+      id:"ytyyty",
+      title: 'Apple Watch Series 7',
       url: "/assets/products/AppleWatchSeries7.jpg",
       description: "Immerse yourself in your gameplay with a curved gaming monitor for a wider viewing experience.",
-      originalPrice: 499,
+      price: 499,
       offerPercentage: 15,
+      updatedAt: " upcoming",
+      createdAt: " January"
     },
     {
-      name: 'Xbox Series',
+      id:"ert455544 ",
+      title: 'Xbox Series',
       url: "/assets/products/Xbox.jpg",
       description: "Keep your devices powered with this AC adapter.",
-      originalPrice: 299,
+      price: 299,
       offerPercentage: 10,
+      updatedAt: " upcoming",
+      createdAt: " January"
     },
   ];
 
@@ -70,16 +82,16 @@ const ProductSlider = (props) => {
     <div className={classes.carousel}>
       <h3>Hot Deals Of Month</h3>
       <Slider {...sliderSettings}>
-        {products.map((product) => {
-          const discountedPrice = product.originalPrice * (1 - product.offerPercentage / 100);
+        {products.map((product ) => {
+          const discountedPrice = product.price * (1 - product.offerPercentage / 100);
           return (
-            <div key={product.name} className={classes.product}>
+            <div key={product.title} className={classes.product}>
               <div className={classes.productContent}>
-                <Image src={product.url} alt={product.name} width={300} height={250} className={classes.productImage} />
+                <Image src={product.url} alt={product.title} width={300} height={250} className={classes.productImage} />
                 <div className={classes.productDetails}>
-                  <h4>{product.name}</h4>
+                  <h4>{product.title}</h4>
                   <p>{product.description}</p>
-                  <p className={classes.originalPrice}>${product.originalPrice.toFixed(2)}</p>
+                  <p className={classes.price}>${product.price.toFixed(2)}</p>
                   <p className={classes.discountedPrice}>${discountedPrice.toFixed(2)}</p>
                   <p className={classes.offer}>{product.offerPercentage}% off</p>
                   <div className={classes.actionButton}>
