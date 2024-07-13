@@ -1,13 +1,10 @@
 let email
-
 if (process.env.NODE_ENV === 'production') {
     email = {
         fromName: 'Tech Heavens',
-        fromAddress: 'dennisdennoh62@gmail.com',
+        fromAddress: 'admin@example.com',
         transportOptions: {
             host: process.env.SMTP_HOST,
-            // service: 'gmail',
-
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS

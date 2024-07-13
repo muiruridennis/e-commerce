@@ -1,6 +1,10 @@
 import { webpackBundler } from '@payloadcms/bundler-webpack' // bundler-import
 import { mongooseAdapter } from '@payloadcms/db-mongodb' // database-adapter-import
 import { payloadCloud } from '@payloadcms/plugin-cloud'
+import { s3Adapter } from "@payloadcms/plugin-cloud-storage/s3";
+import { cloudStorage } from "@payloadcms/plugin-cloud-storage";
+
+
 import nestedDocs from '@payloadcms/plugin-nested-docs'
 import redirects from '@payloadcms/plugin-redirects'
 import seo from '@payloadcms/plugin-seo'
@@ -121,7 +125,7 @@ export default buildConfig({
       method: 'get',
       handler: productsProxy,
     },
-   
+
   ],
   plugins: [
     stripePlugin({
@@ -147,6 +151,22 @@ export default buildConfig({
       uploadsCollection: 'media',
     }),
     payloadCloud(),
+    cloudStorage({
+      collections: {
+        media: {
+          adapter: s3Adapter({
+            config: {
+              endpoint: process.env.BACKBLAZE_B2_ENDPOINT,
+              credentials: {
+                accessKeyId: process.env.BACKBLAZE_B2_APPLICATION_KEY_ID,
+                secretAccessKey: process.env.BACKBLAZE_B2_APPLICATION_KEY,
+              },
+            },
+            bucket: process.env.BACKBLAZE_B2_BUCKET_NAME,
+          }),
+        },
+      },
+    }),
   ],
 
 })
