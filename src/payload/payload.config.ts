@@ -161,6 +161,7 @@ export default buildConfig({
                 accessKeyId: process.env.BACKBLAZE_B2_APPLICATION_KEY_ID,
                 secretAccessKey: process.env.BACKBLAZE_B2_APPLICATION_KEY,
               },
+              region: process.env.BACKBLAZE_B2_REGION,
             },
             bucket: process.env.BACKBLAZE_B2_BUCKET_NAME,
           }),
