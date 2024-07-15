@@ -1,7 +1,7 @@
 import React from 'react'
 import { draftMode } from 'next/headers'
 
-import { Page, } from '../../../payload/payload-types'
+import { Page } from '../../../payload/payload-types'
 import { fetchDoc } from '../../_api/fetchDoc'
 import { Blocks } from '../../_components/Blocks'
 import { Gutter } from '../../_components/Gutter'
