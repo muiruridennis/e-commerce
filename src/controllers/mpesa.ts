@@ -33,7 +33,7 @@ const stkPush = async (req, phoneNumber: string, amount: number, orderId: string
         PartyA: formattedPhoneNumber,
         PartyB: shortcode,
         PhoneNumber: formattedPhoneNumber,
-        CallBackURL: `https://2sdgrbnj-3000.uks1.devtunnels.ms/api/mpesa/callback/${orderId}`,
+        CallBackURL: `https://saleshub.onrender.com/api/mpesa/callback/${orderId}`,
         AccountReference: "Tech Heavens",
         TransactionDesc: "Paid online",
     }, {
