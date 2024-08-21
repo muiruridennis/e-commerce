@@ -32,7 +32,6 @@ const Users: CollectionConfig = {
         return await generateEmailHTML({
           headline: 'Reset Password',
           content: `
-          <p>Hello, ${user.name}!</p>
           <p>You are receiving this email because you (or someone else) have requested to reset the password for your account.</p>
           <p>If you did not request this password reset, please ignore this email and your password will remain unchanged.</p>
           <p>Please click the link below to reset your password:</p>

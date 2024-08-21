@@ -25,10 +25,6 @@ import Payments from './collections/Payments';
 
 // import BeforeDashboard from './components/BeforeDashboard'
 // import BeforeLogin from './components/BeforeLogin'
-import { createPaymentIntent } from './endpoints/create-payment-intent'
-import { customersProxy } from './endpoints/customers'
-import { productsProxy } from './endpoints/products'
-import { seed } from './endpoints/seed'
 import { Footer } from './globals/Footer'
 import { Header } from './globals/Header'
 import { Settings } from './globals/Settings'
@@ -113,24 +109,7 @@ export default buildConfig({
   csrf: ['https://checkout.stripe.com', process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(
     Boolean,
   ),
-  endpoints: [
-    {
-      path: '/create-payment-intent',
-      method: 'post',
-      handler: createPaymentIntent,
-    },
-    {
-      path: '/stripe/customers',
-      method: 'get',
-      handler: customersProxy,
-    },
-    {
-      path: '/stripe/products',
-      method: 'get',
-      handler: productsProxy,
-    },
-
-  ],
+  endpoints: [],
   plugins: [
     redirects({
       collections: ['pages', 'products'],

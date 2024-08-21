@@ -12,7 +12,6 @@ dotenv.config({
 import express from 'express'
 import payload from 'payload'
 
-import { seed } from './payload/seed'
 import mpesaRoute from "./Routes/mpesa";
 
 const app = express()
@@ -29,11 +28,6 @@ const start = async (): Promise<void> => {
   })
 
   app.use('/api', mpesaRoute);
-
-  if (process.env.PAYLOAD_SEED === 'true') {
-    await seed(payload)
-    process.exit()
-  }
 
   if (process.env.NEXT_BUILD) {
     app.listen(PORT, async () => {

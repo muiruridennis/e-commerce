@@ -3,7 +3,6 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { Page, Settings } from '../../../payload/payload-types'
-import { staticCart } from '../../../payload/seed/cart-static'
 import { fetchDoc } from '../../_api/fetchDoc'
 import { fetchSettings } from '../../_api/fetchGlobals'
 import { Blocks } from '../../_components/Blocks'
@@ -37,9 +36,7 @@ export default async function Cart() {
   // if no `cart` page exists, render a static one using dummy content
   // you should delete this code once you have a cart page in the CMS
   // this is really only useful for those who are demoing this template
-  if (!page) {
-    page = staticCart
-  }
+
 
   if (!page) {
     return notFound()
@@ -82,9 +79,6 @@ export async function generateMetadata(): Promise<Metadata> {
     // in production you may want to redirect to a 404  page or at least log the error somewhere
   }
 
-  if (!page) {
-    page = staticCart
-  }
 
   return generateMeta({ doc: page })
 }
