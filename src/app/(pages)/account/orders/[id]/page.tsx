@@ -46,7 +46,7 @@ export default async function OrderPage({ params: { id } }) {
     notFound()
   }
   return (
-    <>
+    <div>
       <h5>
         {`Order`}
         <span className={classes.id}>{` ${order.id}`}</span>
@@ -142,7 +142,7 @@ export default async function OrderPage({ params: { id } }) {
         })}
       </div>
       <HR className={classes.hr} />
-    </>
+    </div>
   )
 }
 
