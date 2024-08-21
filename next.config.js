@@ -14,7 +14,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['localhost', process.env.NEXT_PUBLIC_SERVER_URL, "https://saleshub.onrender.com"]
+    domains: ['localhost', process.env.NEXT_PUBLIC_SERVER_URL, process.env.DEPLOYED_SERVER_URL]
       .filter(Boolean)
       .map(url => url.replace(/https?:\/\//, '')),
   },

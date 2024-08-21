@@ -17,13 +17,34 @@ export const CheckoutItem = ({ product, title, metaImage, quantity, index }) => 
       <div className={classes.itemDetails}>
         <div className={classes.titleWrapper}>
           <h6>{title}</h6>
-          <Price product={product} button={false} />
+          <div className={classes.priceWrapper}>
+            {product.discountedPrice ? (
+              <>
+                <span className={classes.originalPrice}>
+                  <Price product={product} button={false} />
+                </span>
+                <span className={classes.discountPrice}>
+                  <Price product={product} button={false} discountedPrice={product.discountedPrice} />
+                </span>
+              </>
+            ) : (
+              <Price product={product} button={false} />
+            )}
+          </div>
         </div>
         <p className={classes.quantity}>x{quantity}</p>
       </div>
 
       <div className={classes.subtotal}>
-        <Price product={product} button={false} quantity={quantity} />
+      {product.discountedPrice ? (
+          <>
+            <span className={classes.discountPrice}>
+              <Price product={product} button={false} discountedPrice={product.discountedPrice} quantity={quantity} />
+            </span>
+          </>
+        ) : (
+          <Price product={product} button={false} quantity={quantity} />
+        )}
       </div>
     </li>
   )

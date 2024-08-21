@@ -6,6 +6,7 @@ import { PAGE } from '../_graphql/pages'
 import { PRODUCT } from '../_graphql/products'
 import { GRAPHQL_API_URL } from './shared'
 import { payloadToken } from './token'
+import { ACTIVE_PROMOTION } from '../_graphql/promotions'
 
 const queryMap = {
   pages: {
@@ -16,10 +17,15 @@ const queryMap = {
     query: PRODUCT,
     key: 'Products',
   },
+
   orders: {
     query: ORDER,
     key: 'Orders',
   },
+  promotions:{
+    query:ACTIVE_PROMOTION,
+    key: 'Promotion',
+  }
 }
 
 export const fetchDoc = async <T>(args: {

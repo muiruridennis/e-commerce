@@ -1,7 +1,6 @@
-// WishlistNavItem.tsx
 import Link from 'next/link';
 import Image from 'next/image';
-import classes from './index.module.scss'; // Import your CSS module
+import classes from './index.module.scss'; 
 
 type WishlistNavItemProps = {
   itemCount: number;

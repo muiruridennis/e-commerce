@@ -10,7 +10,7 @@ import { ensureFirstUserIsAdmin } from './hooks/ensureFirstUserIsAdmin'
 import { loginAfterCreate } from './hooks/loginAfterCreate'
 import { resolveDuplicatePurchases } from './hooks/resolveDuplicatePurchases'
 import { CustomerSelect } from './ui/CustomerSelect'
-
+import generateEmailHTML from '../../email/generateEmailHTML'
 const Users: CollectionConfig = {
   slug: 'users',
   admin: {
@@ -24,11 +24,43 @@ const Users: CollectionConfig = {
     delete: admins,
     admin: ({ req: { user } }) => checkRole(['admin'], user),
   },
+  auth: {
+    forgotPassword: {
+      generateEmailHTML: async ({ token, user }) => {
+        const resetPasswordUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/reset-password?token=${token}`;
+
+        return await generateEmailHTML({
+          headline: 'Reset Password',
+          content: `
+          <p>Hello, ${user.name}!</p>
+          <p>You are receiving this email because you (or someone else) have requested to reset the password for your account.</p>
+          <p>If you did not request this password reset, please ignore this email and your password will remain unchanged.</p>
+          <p>Please click the link below to reset your password:</p>
+        `,
+          actionLink: resetPasswordUrl,
+          actionText: 'Reset Password',
+        });
+      },
+    },
+    //there is a bug in the verification process that causes error 401 (unauthorized)
+    //https://github.com/payloadcms/payload/issues/5040
+    // verify: {
+    //   generateEmailHTML: async ({ token, }) => {
+    //     const verifyUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/verify-email?token=${token}`;
+    //     return await generateEmailHTML({
+    //       headline: 'Email Verification',
+    //       content: `Thank you for registering. Please verify your email by clicking the link below:`,
+    //       actionLink: verifyUrl,
+    //       actionText: 'Verify Email',
+    //     });
+    //   },
+    // },
+  },
   hooks: {
     beforeChange: [createStripeCustomer],
     afterChange: [loginAfterCreate],
   },
-  auth: true,
+  // auth: true,
   endpoints: [
     {
       path: '/:teamID/customer',

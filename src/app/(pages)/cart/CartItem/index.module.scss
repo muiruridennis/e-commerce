@@ -47,7 +47,24 @@
     margin-bottom: 8px;
   }
 }
+.priceWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  @include small-break {
+    display:block;
+    gap: 8px;
+  }
 
+  .originalPrice {
+    text-decoration: line-through;
+    color: var(--color-error-450);
+  }
+
+  .discountPrice {
+    color: var(--color-base-1000);
+  }
+}
 .quantity {
   border: 1px solid var(--color-dark-500);
   display: grid;

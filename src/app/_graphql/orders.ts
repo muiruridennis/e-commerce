@@ -18,10 +18,14 @@ export const ORDER = `
         orderedBy
         paymentMethod
         status
+        totalDiscount
+        deliveryCharge
+        totalTax
         items {
           product ${PRODUCT}
           title
-          priceJSON
+          price
+          discountedPrice
         }
       }
     }

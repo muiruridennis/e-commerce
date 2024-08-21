@@ -102,3 +102,13 @@
     align-items: flex-start;
   }
 }
+.initialPrice {
+  text-decoration: line-through;
+  // color: var(--color-accent);
+  color:#F5004F
+}
+
+.discountedPrice {
+  color: var(--color-accent);
+  font-weight: 700;
+}

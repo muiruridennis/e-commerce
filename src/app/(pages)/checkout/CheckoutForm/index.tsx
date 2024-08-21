@@ -9,25 +9,46 @@ import { useCart } from '../../../_providers/Cart'
 import classes from './index.module.scss'
 import Image from 'next/image'
 import { HR } from '../../../_components/HR'
+import { useShipping } from '../context/ShippingContext'
 
 
 export const CheckoutForm: React.FC<{}> = () => {
+  const { shippingInfo, validateShippingInfo, shippingErrors } = useShipping();
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [attempts, setAttempts] = useState(0)
   const [orderId, setOrderId] = useState<string | null>(null)
   const [polling, setPolling] = useState(false)
   const router = useRouter()
-  const { cart, cartTotal } = useCart()
+  const { cart, cartTotal, deliveryCharge, totalDiscount, totalTax } = useCart()
   const [phoneNumber, setPhoneNumber] = useState('')
   const [paymentMethod, setPaymentMethod] = useState('')
+  
+  useEffect(() => {
+    // If there are no errors left, clear the error message
+    const hasNoErrors = Object.values(shippingErrors).every((error) => error === undefined)
+    if (hasNoErrors) {
+      setError(null)
+    }
+  }, [shippingErrors])
 
   const handleSubmit = useCallback(
-    async e => {
+    async (e :React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       setIsLoading(true)
       setError(null)
       setAttempts(0)
+
+      const isShippingValid = validateShippingInfo();
+    
+      // Check if all errors are cleared
+      const hasNoErrors = Object.values(shippingErrors).every((error) => error === undefined);
+  
+      if (!isShippingValid || !hasNoErrors) {
+        setError('Please correct the errors in the shipping information.');
+        setIsLoading(false);
+        return;
+      }
 
       try {
         // Create the order first
@@ -44,7 +65,15 @@ export const CheckoutForm: React.FC<{}> = () => {
               product: typeof product === 'string' ? product : product.id,
               quantity,
               price: typeof product === 'object' ? product.price : undefined,
+
             })),
+            shippingMethod: shippingInfo.deliveryOrPickup,
+            city: shippingInfo.city,
+            county: shippingInfo.county,
+            shippingContactNumber: shippingInfo.phoneNumber,
+            totalDiscount,
+            deliveryCharge,
+            totalTax
           }),
         })
 
@@ -95,7 +124,7 @@ export const CheckoutForm: React.FC<{}> = () => {
         setIsLoading(false)
       }
     },
-    [cart, cartTotal, phoneNumber, paymentMethod],
+    [cart, cartTotal, phoneNumber, paymentMethod, validateShippingInfo, shippingErrors],
   )
 
   useEffect(() => {

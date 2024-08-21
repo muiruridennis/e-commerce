@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'production') {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS
             },
-            port: 587,
+            port: process.env.SMTP_PORT || 587,
             secure: false,
         }
     }

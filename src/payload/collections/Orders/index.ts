@@ -5,6 +5,7 @@ import { adminsOrOrderedBy } from './access/adminsOrOrderedBy';
 import { clearUserCart } from './hooks/clearUserCart';
 import { populateOrderedBy } from './hooks/populateOrderedBy';
 import { updateUserPurchases } from './hooks/updateUserPurchases';
+import { sendOrderEmail } from './hooks/sendOrderEmail';
 export const Orders: CollectionConfig = {
   slug: 'orders',
   admin: {
@@ -13,7 +14,7 @@ export const Orders: CollectionConfig = {
     preview: doc => `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/orders/${doc.id}`,
   },
   hooks: {
-    afterChange: [updateUserPurchases, clearUserCart],
+    afterChange: [updateUserPurchases, clearUserCart, sendOrderEmail],
   },
   access: {
     read: adminsOrOrderedBy,
@@ -67,6 +68,21 @@ export const Orders: CollectionConfig = {
       min: 0,
     },
     {
+      name: 'totalDiscount',
+      type: 'number',
+      min: 0,
+    },
+    {
+      name: 'deliveryCharge',
+      type: 'number',
+      min: 0,
+    },
+    {
+      name: 'totalTax',
+      type: 'number',
+      min: 0,
+    },
+    {
       name: 'items',
       type: 'array',
       fields: [
@@ -87,6 +103,32 @@ export const Orders: CollectionConfig = {
           min: 0,
         },
       ],
+    },
+    {
+      name: 'shippingMethod',
+      label: 'Shipping Method',
+      type: 'select',
+      options: [
+        { label: 'Delivery', value: 'delivery' },
+        { label: 'Pickup', value: 'pickup' },
+      ],
+      required: true,
+    },
+    {
+      name: 'county',
+      label: 'County',
+      type: 'text',
+    },
+    {
+      name: 'city',
+      label: 'City',
+      type: 'text',
+    },
+    {
+      name: 'shippingContactNumber',
+      label: 'Shipping Contact Number',
+      type: 'text',
+      required: true,
     },
   ],
 };

@@ -36,7 +36,7 @@
   flex-direction: column;
   gap: calc(var(--base) / 2);
 
-  & > * {
+  &>* {
     margin: 0;
   }
 }
@@ -102,4 +102,39 @@
 
 .hr {
   margin: 0;
+}
+
+.priceWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  @include small-break {
+    display: block;
+    gap: 8px;
+  }
+
+  .originalPrice {
+    text-decoration: line-through;
+    color: var(--color-error-450);
+  }
+
+  .discountPrice {
+    color: var(--color-base-1000);
+  }
+}
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 30px 24px;
+  border: 1px solid var(--color-dark-50);
+}
+
+.summaryrow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-dark-50);
 }

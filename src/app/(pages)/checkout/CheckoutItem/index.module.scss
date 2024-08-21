@@ -46,12 +46,32 @@
     font-size: 16px;
     margin-top: 8px;
   }
+
+  .priceWrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    @include small-break {
+      display: block;
+      gap: 8px;
+    }
+
+    .originalPrice {
+      text-decoration: line-through;
+      color: var(--color-error-450);
+    }
+
+    .discountPrice {
+      color: var(--color-base-1000);
+    }
+  }
 }
 
 .quantity {
   text-align: center;
   font-size: 18px;
-  
+
   @include small-break {
     text-align: start;
     font-size: 16px;

@@ -11,7 +11,6 @@ import { useCart } from '../../../_providers/Cart'
 import CartItem from '../CartItem'
 
 import classes from './index.module.scss'
-
 export const CartPage: React.FC<{
   settings: Settings
   page: Page
@@ -21,7 +20,18 @@ export const CartPage: React.FC<{
 
   const { user } = useAuth()
 
-  const { cart, cartIsEmpty, addItemToCart, cartTotal, hasInitializedCart } = useCart()
+  const {
+    cart,
+    cartIsEmpty,
+    addItemToCart,
+    cartTotal,
+    hasInitializedCart,
+    deliveryCharge,
+    totalDiscount,
+    totalTax
+  } = useCart()
+  console.log(cartTotal)
+
 
   return (
     <Fragment>
@@ -72,7 +82,7 @@ export const CartPage: React.FC<{
                       const {
                         quantity,
                         product,
-                        product: { id, title, meta, stripeProductID },
+                        product: { title, meta },
                       } = item
 
                       const isLast = index === (cart?.items?.length || 0) - 1
@@ -101,14 +111,20 @@ export const CartPage: React.FC<{
 
                 <div className={classes.row}>
                   <p className={classes.cartTotal}>Delivery Charge</p>
-                  <p className={classes.cartTotal}>$0</p>
+                  <p className={classes.cartTotal}>{`KSH ${deliveryCharge}`} </p>
                 </div>
-
+                <div className={classes.row}>
+                  <p className={classes.cartTotal}>Discount</p>
+                  <p className={classes.cartTotal}>{totalDiscount}</p>
+                </div>
+                <div className={classes.row}>
+                  <p className={classes.cartTotal}>Estimated Taxes</p>
+                  <p className={classes.cartTotal}>{totalTax}</p>
+                </div>
                 <div className={classes.row}>
                   <p className={classes.cartTotal}>Grand Total</p>
                   <p className={classes.cartTotal}>{cartTotal.formatted}</p>
                 </div>
-
                 <Button
                   className={classes.checkoutButton}
                   href={user ? '/checkout' : '/login?redirect=%2Fcheckout'}

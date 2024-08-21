@@ -1,6 +1,6 @@
 import payload from 'payload';
 import type { AfterChangeHook } from 'payload/dist/collections/config/types';
-import generateEmailHTML from '../email/generateEmailHTML';
+import generateEmailHTML from '../../../email/generateEmailHTML';
 import { Product, Media } from '../../../payload-types';
 
 const notifyBackInStock: AfterChangeHook = async ({ previousDoc, doc }) => {

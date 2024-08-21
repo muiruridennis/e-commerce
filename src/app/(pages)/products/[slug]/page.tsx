@@ -7,7 +7,6 @@ import { Product, Product as ProductType } from '../../../../payload/payload-typ
 import { fetchDoc } from '../../../_api/fetchDoc'
 import { fetchDocs } from '../../../_api/fetchDocs'
 import { Blocks } from '../../../_components/Blocks'
-import { PaywallBlocks } from '../../../_components/PaywallBlocks'
 import { ProductHero } from '../../../_heros/Product'
 import { generateMeta } from '../../../_utilities/generateMeta'
 
@@ -16,7 +15,7 @@ import { generateMeta } from '../../../_utilities/generateMeta'
 // See the note in '../../../[slug]/page.tsx' about this
 export const dynamic = 'force-dynamic'
 
-export default async function Product({ params: { slug } }) {
+export default async function ProductPage({ params: { slug } }) {
   
   const { isEnabled: isDraftMode } = draftMode()
 
@@ -38,11 +37,9 @@ export default async function Product({ params: { slug } }) {
   }
 
   const { relatedProducts } = product
-
   return (
     <>
       <ProductHero product={product} />
-      {product?.enablePaywall && <PaywallBlocks productSlug={slug as string} disableTopPadding />}
       <Blocks
         disableTopPadding
         blocks={[

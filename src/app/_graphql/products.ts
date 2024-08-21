@@ -18,22 +18,14 @@ export const PRODUCT = `
       docs {
         id
         title
-        stripeProductID
         ${PRODUCT_CATEGORIES}
-        layout {
-          ${CALL_TO_ACTION}
-          ${CONTENT}
-          ${MEDIA_BLOCK}
-          ${ARCHIVE_BLOCK}
-        }
         inventory {
           id
           stockQuantity
           stockStatus
         }
-        priceJSON
-        enablePaywall
         price
+        discountedPrice
         relatedProducts {
           id
           slug

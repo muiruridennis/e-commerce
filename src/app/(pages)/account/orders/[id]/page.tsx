@@ -13,7 +13,7 @@ import { mergeOpenGraph } from '../../../../_utilities/mergeOpenGraph'
 
 import classes from './index.module.scss'
 
-export default async function Order({ params: { id } }) {
+export default async function OrderPage({ params: { id } }) {
   const { token } = await getMeUser({
     nullUserRedirect: `/login?error=${encodeURIComponent(
       'You must be logged in to view this order.',
@@ -42,12 +42,11 @@ export default async function Order({ params: { id } }) {
   if (order.paymentMethod === "Mpesa" && order.payment && typeof order.payment !== 'string') {
     mpesaReceiptNumber = (order.payment as Payment).mpesaReceiptNumber;
   }
-
   if (!order) {
     notFound()
   }
   return (
-    <div>
+    <>
       <h5>
         {`Order`}
         <span className={classes.id}>{` ${order.id}`}</span>
@@ -58,14 +57,32 @@ export default async function Order({ params: { id } }) {
         {order.paymentMethod === "Mpesa" && (<p>{`Mpesa Trans Number:  ${mpesaReceiptNumber}`}</p>)}
         <p>{`Status : ${order.status}`}</p>
         <p>{`Ordered On: ${formatDateTime(order.createdAt)}`}</p>
-        <p className={classes.total}>
-          {'Total: '}
-          {new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'ksh',
-          }).format(order.total)}
-        </p>
+       
       </div>
+      <div className={classes.summary}>
+        <div className={classes.summaryrow}>
+          <h6 className={classes.cartTotal}>Summary</h6>
+        </div>
+
+        <div className={classes.summaryrow}>
+          <p className={classes.cartTotal}>Delivery Charge</p>
+          <p className={classes.cartTotal}>{order.deliveryCharge} </p>
+        </div>
+        <div className={classes.summaryrow}>
+          <p className={classes.cartTotal}>Discount</p>
+          <p className={classes.cartTotal}>{order.totalDiscount}</p>
+        </div>
+        <div className={classes.summaryrow}>
+          <p className={classes.cartTotal}>Estimated Taxes</p>
+          <p className={classes.cartTotal}>{order.totalTax}</p>
+        </div>
+        <div className={classes.summaryrow}>
+          <p className={classes.cartTotal}>Grand Total</p>
+          <p className={classes.cartTotal}>{order.total}</p>
+        </div>
+      </div>
+
+
 
       <div className={classes.order}>
         {order.items?.map((item, index) => {
@@ -100,7 +117,21 @@ export default async function Order({ params: { id } }) {
                       </Link>
                     </h6>
                     <p>{`Quantity: ${quantity}`}</p>
-                    <Price product={product} button={false} quantity={quantity} />
+                    {/* <Price product={product} button={false} quantity={quantity} /> */}
+                    <div className={classes.priceWrapper}>
+                      {product.discountedPrice ? (
+                        <>
+                          <span className={classes.originalPrice}>
+                            <Price product={product} button={false} />
+                          </span>
+                          <span className={classes.discountPrice}>
+                            <Price product={product} button={false} discountedPrice={product.discountedPrice} />
+                          </span>
+                        </>
+                      ) : (
+                        <Price product={product} button={false} />
+                      )}
+                    </div>
                   </div>
                 </div>
               </Fragment>
@@ -111,7 +142,7 @@ export default async function Order({ params: { id } }) {
         })}
       </div>
       <HR className={classes.hr} />
-    </div>
+    </>
   )
 }
 

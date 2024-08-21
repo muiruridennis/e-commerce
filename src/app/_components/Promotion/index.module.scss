@@ -24,6 +24,7 @@
 
   .title {
     font-weight: 400;
+    color: #201E43;
   }
 
   .textBox {
@@ -38,7 +39,29 @@
     }
   }
 
+  .viewProductsButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
 
+    &:hover {
+      background-color: #0056b3;
+    }
+
+    .logo {
+      margin-left: 10px;
+    }
+  }
 
   .stats {
     display: grid;
@@ -64,115 +87,39 @@
     }
   }
 
-  .carousel {
-    width: 100%;
-    height: max-content;
-    margin: 0 auto;
-    // overflow: hidden;
-
-    h3 {
-      text-align: center;
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-
-    .slick-slide {
-      display: flex !important;
-      align-items: center;
-      justify-content: center;
-      width: 100% !important;
-
-    }
-  }
-
-  .product {
-    display: flex;
-    align-items: center;
-    padding: 20px;
-    border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 20px;
-    gap: 20px;
-
-    @include small-break {
-      flex-direction: column;
-      text-align: center;
-      padding: 10px;
-    }
-  }
-
-  .productContent {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-
-    @include small-break {
-      flex-direction: column;
-      gap: 10px;
-    }
-  }
-
-  .productImage {
-    border-radius: 8px;
-    object-fit: contain;
-
-    @include small-break {
-      width: 100%;
-    }
-  }
-
-  .productDetails {
+  .expiredMessage {
     display: flex;
     flex-direction: column;
-
-    h4 {
-      font-size: 20px;
-      margin: 0;
-      margin-bottom: 10px;
-    }
-
-    p {
-      font-size: 16px;
-      margin: 0;
-      color: #443535;
-    }
-
-    .originalPrice {
-      font-size: 16px;
-      color: #999;
-      text-decoration: line-through;
-      margin-bottom: 5px;
-    }
-
-    .discountedPrice {
-      font-size: 18px;
-      color: #000;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .offer {
-      font-size: 16px;
-      color: #ff0000;
-      margin-bottom: 10px;
-    }
-
-    .actionButton {
-      display: flex;
-      gap: 10px;
-    }
-
-    @include small-break {
-      align-items: center;
-    }
-  }
-  .expiredMessage{
-    display: flex;
     align-items: center;
     justify-content: center;
-    p{
-      font-size: 22px;
+    padding: 20px;
+    background-color: #ff00001a;;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+    p {
+      font-size: 18px;
+      margin: 10px 0;
+  
+      &:first-of-type {
+        font-weight: bold;
+        color: #333;
+      }
+    }
+  
+    .promotionsLink {
+      font-size: 18px;
+      font-weight: bold;
+      color: #007bff;
+      text-decoration: none;
+      transition: color 0.3s;
+  
+      &:hover {
+        color: #0056b3;
+      }
     }
   }
+  
 }

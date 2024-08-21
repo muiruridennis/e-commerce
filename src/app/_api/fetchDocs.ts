@@ -7,6 +7,8 @@ import { PRODUCTS } from '../_graphql/products'
 import { GRAPHQL_API_URL } from './shared'
 import { payloadToken } from './token'
 import { CATEGORIES } from '../_graphql/categories'
+import { ACTIVE_PROMOTION } from '../_graphql/promotions'
+
 
 const queryMap = {
   pages: {
@@ -25,6 +27,10 @@ const queryMap = {
     query: CATEGORIES,
     key: 'Categories',
   },
+  promotions:{
+    query:ACTIVE_PROMOTION,
+    key: 'Promotions',
+  }
 }
 
 export const fetchDocs = async <T>(

@@ -43,7 +43,6 @@ export const beforeInventoryChange: BeforeChangeHook = async ({ data, req }) => 
       console.error('Error before inventory change:', error);
     }
   }
-  console.log('beforeInventoryChange hook completed.', data);
 };
 
 

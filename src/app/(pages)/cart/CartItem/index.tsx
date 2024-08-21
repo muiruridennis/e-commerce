@@ -44,9 +44,26 @@ const CartItem = ({ product, title, metaImage, qty, addItemToCart }) => {
       </Link>
 
       <div className={classes.itemDetails}>
-        <div className={classes.titleWrapper}>
+        {/* <div className={classes.titleWrapper}>
           <h6>{title}</h6>
           <Price product={product} button={false} />
+        </div> */}
+        <div className={classes.titleWrapper}>
+          <h6>{title}</h6>
+          <div className={classes.priceWrapper}>
+            {product.discountedPrice ? (
+              <>
+                <span className={classes.originalPrice}>
+                  <Price product={product} button={false} />
+                </span>
+                <span className={classes.discountPrice}>
+                  <Price product={product} button={false} discountedPrice={product.discountedPrice} />
+                </span>
+              </>
+            ) : (
+              <Price product={product} button={false} />
+            )}
+          </div>
         </div>
 
         <div className={classes.quantity}>
@@ -80,7 +97,15 @@ const CartItem = ({ product, title, metaImage, qty, addItemToCart }) => {
       </div>
 
       <div className={classes.subtotalWrapper}>
-        <Price product={product} button={false} quantity={quantity} />
+        {product.discountedPrice ? (
+          <>
+            <span className={classes.discountPrice}>
+              <Price product={product} button={false} discountedPrice={product.discountedPrice} quantity={quantity} />
+            </span>
+          </>
+        ) : (
+          <Price product={product} button={false} quantity={quantity} />
+        )}
         <RemoveFromCartButton product={product} />
       </div>
     </li>

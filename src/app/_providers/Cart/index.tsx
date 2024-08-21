@@ -13,6 +13,7 @@ import React, {
 import { Product, User } from '../../../payload/payload-types'
 import { useAuth } from '../Auth'
 import { CartItem, cartReducer } from './reducer'
+import { calculateDeliveryCharge, calculateTax, calculateTotalDiscount } from './utilities'
 
 export type CartContext = {
   cart: User['cart']
@@ -25,9 +26,15 @@ export type CartContext = {
     formatted: string
     raw: number
   }
+  deliveryCharge: number
+  totalDiscount: number
+  totalTax: number
   hasInitializedCart: boolean
+  setDeliveryLocation: (location: string) => void
+  deliveryLocation: string
+  setDeliveryOption: (option: 'delivery' | 'pickup') => void;
+  deliveryOption: 'delivery' | 'pickup'
 }
-
 const Context = createContext({} as CartContext)
 
 export const useCart = () => useContext(Context)
@@ -42,7 +49,6 @@ const arrayHasItems = array => Array.isArray(array) && array.length > 0
 // Step 5: If the user is logged out, sync the cart to local storage only
 
 export const CartProvider = props => {
-  // const { setTimedNotification } = useNotifications();
   const { children } = props
   const { user, status: authStatus } = useAuth()
 
@@ -57,6 +63,12 @@ export const CartProvider = props => {
     formatted: '0.00',
     raw: 0,
   })
+  const [deliveryCharge, setDeliveryCharge] = useState(0)
+  const [totalDiscount, setTotalDiscount] = useState(0)
+  const [totalTax, setTotalTax] = useState(0)
+  const [deliveryLocation, setDeliveryLocation] = useState('Nairobi') // Default location
+  const [deliveryOption, setDeliveryOption] = useState<'delivery' | 'pickup'>('delivery');
+
 
   const hasInitialized = useRef(false)
   const [hasInitializedCart, setHasInitialized] = useState(false)
@@ -226,24 +238,42 @@ export const CartProvider = props => {
   // calculate the new cart total whenever the cart changes
   useEffect(() => {
     if (!hasInitialized.current) return;
-    const newTotal =
-      cart?.items?.reduce((acc, item) => {
-        return (
-          acc +
-          (typeof item.product === 'object'
-            ? item?.product?.price * (typeof item?.quantity === 'number' ? item?.quantity : 0)
-            : 0)
-        );
-      }, 0) || 0;
+    const newTotal = cart?.items?.reduce((acc, item) => {
+      if (typeof item.product === 'object') {
+        // Check if the product has a discountedPrice
+        const price = item.product.discountedPrice ?? item.product.price;
+        return acc + (price * (typeof item?.quantity === 'number' ? item?.quantity : 0));
+      }
+      return acc;
+    }, 0) || 0;
+    const newTotalDiscount = calculateTotalDiscount(cart.items || []);
+    const taxRate = 0.01; // Example tax rate
+    const newTotalTax = calculateTax(cart.items, taxRate);
+
+    const newDeliveryCharge = calculateDeliveryCharge(
+      { total: newTotal },
+      deliveryLocation,
+      deliveryOption as 'delivery' | 'pickup'
+    );
+
+
+    // Calculate the final total
+    const finalTotal = newTotal + newTotalTax + newDeliveryCharge;
 
     setTotal({
-      formatted: (newTotal ).toLocaleString('en-US', {
+      formatted: (finalTotal).toLocaleString('en-US', {
         style: 'currency',
         currency: 'KSH',
       }),
-      raw: newTotal,
+      raw: finalTotal,
     });
-  }, [cart, hasInitialized]);
+
+    setTotalDiscount(newTotalDiscount);
+    setTotalTax(newTotalTax);
+    setDeliveryCharge(newDeliveryCharge);
+
+
+  }, [cart, hasInitialized, deliveryLocation, deliveryOption]);
 
 
   return (
@@ -256,7 +286,14 @@ export const CartProvider = props => {
         clearCart,
         isProductInCart,
         cartTotal: total,
+        deliveryCharge,
+        totalDiscount,
+        totalTax,
+        setDeliveryLocation,
         hasInitializedCart,
+        deliveryLocation,
+        deliveryOption,
+        setDeliveryOption
       }}
     >
       {children && children}

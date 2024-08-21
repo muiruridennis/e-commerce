@@ -23,8 +23,8 @@ import Products from './collections/Products'
 import Users from './collections/Users'
 import Payments from './collections/Payments';
 
-import BeforeDashboard from './components/BeforeDashboard'
-import BeforeLogin from './components/BeforeLogin'
+// import BeforeDashboard from './components/BeforeDashboard'
+// import BeforeLogin from './components/BeforeLogin'
 import { createPaymentIntent } from './endpoints/create-payment-intent'
 import { customersProxy } from './endpoints/customers'
 import { productsProxy } from './endpoints/products'
@@ -32,13 +32,12 @@ import { seed } from './endpoints/seed'
 import { Footer } from './globals/Footer'
 import { Header } from './globals/Header'
 import { Settings } from './globals/Settings'
-import { priceUpdated } from './stripe/webhooks/priceUpdated'
-import { productUpdated } from './stripe/webhooks/productUpdated'
 import Inventory from './collections/Inventory/inventory'
 import BackInStockNotifications from './collections/BackInStockNotifications'
 import email from './email/transport'
 import Brands from './collections/Brands'
 import FormSubmissions from './collections/FormSubmissions'
+import Promotions from './collections/Promotions';
 
 
 const generateTitle: GenerateTitle = () => {
@@ -58,10 +57,10 @@ export default buildConfig({
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below and the import `BeforeLogin` statement on line 15.
-      beforeLogin: [BeforeLogin],
+      // beforeLogin: [BeforeLogin],
       // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below and the import `BeforeDashboard` statement on line 15.
-      beforeDashboard: [BeforeDashboard],
+      // beforeDashboard: [BeforeDashboard],
     },
     webpack: config => {
       return {
@@ -94,7 +93,12 @@ export default buildConfig({
   }),
   // database-adapter-config-end
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL,
-  collections: [Pages, Products, Orders, Media, Categories, Users, Payments, Inventory, BackInStockNotifications, Brands, FormSubmissions],
+  collections: [
+    Pages, Products, Orders,
+    Media, Categories, Users, Payments,
+    Inventory, BackInStockNotifications,
+    Brands, FormSubmissions, Promotions
+  ],
   globals: [Settings, Header, Footer],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
@@ -128,17 +132,6 @@ export default buildConfig({
 
   ],
   plugins: [
-    stripePlugin({
-      stripeSecretKey: process.env.STRIPE_SECRET_KEY || '',
-      isTestKey: Boolean(process.env.PAYLOAD_PUBLIC_STRIPE_IS_TEST_KEY),
-      stripeWebhooksEndpointSecret: process.env.STRIPE_WEBHOOKS_SIGNING_SECRET,
-      rest: false,
-      webhooks: {
-        'product.created': productUpdated,
-        'product.updated': productUpdated,
-        'price.updated': priceUpdated,
-      },
-    }),
     redirects({
       collections: ['pages', 'products'],
     }),

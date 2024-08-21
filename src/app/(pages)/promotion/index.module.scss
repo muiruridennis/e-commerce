@@ -1,0 +1,57 @@
+@import '../../_css/common';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+
+  @include small-break {
+    padding: 10px;
+  }
+}
+
+.promotionContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  @include small-break {
+    gap: 10px;
+  }
+
+  .promotionDetails {
+    padding: 20px;
+
+    h2 {
+      margin: 0;
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+
+    p {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    @include small-break {
+      text-align: center;
+    }
+  }
+
+  .productList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+
+    @include small-break {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+}

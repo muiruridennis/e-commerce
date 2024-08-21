@@ -1,20 +1,12 @@
 import type { CollectionConfig } from 'payload/types'
 
 import { admins } from '../../access/admins'
-import { Archive } from '../../blocks/ArchiveBlock'
-import { CallToAction } from '../../blocks/CallToAction'
-import { Content } from '../../blocks/Content'
-import { MediaBlock } from '../../blocks/MediaBlock'
 import { slugField } from '../../fields/slug'
-import { populateArchiveBlock } from '../../hooks/populateArchiveBlock'
-import { checkUserPurchases } from './access/checkUserPurchases'
 import { beforeProductChange } from './hooks/beforeChange'
 import { deleteProductFromCarts } from './hooks/deleteProductFromCarts'
 import { revalidateProduct } from './hooks/revalidateProduct'
-import { ProductSelect } from './ui/ProductSelect'
 import { deleteProductFromWishlist } from './hooks/deleteProductFromWishlist'
 import { syncInventory, beforeInventoryChange } from '../Inventory/hooks/syncInventory'
-// import notifyAdmin from '../Notifications/hooks/notifyAdmin'
 
 const Products: CollectionConfig = {
   slug: 'products',
@@ -30,14 +22,13 @@ const Products: CollectionConfig = {
   hooks: {
     beforeChange: [
       beforeProductChange,
-      beforeInventoryChange,
-      // notifyAdmin
+      // beforeInventoryChange,
     ],
     afterChange: [
       revalidateProduct,
       syncInventory
     ],
-    afterRead: [populateArchiveBlock],
+    // afterRead: [populateArchiveBlock],
     afterDelete: [deleteProductFromCarts, deleteProductFromWishlist],
   },
   versions: {
@@ -76,60 +67,6 @@ const Products: CollectionConfig = {
       },
     },
     {
-      type: 'tabs',
-      tabs: [
-        {
-          label: 'Content',
-          fields: [
-            {
-              name: 'layout',
-              type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive],
-            },
-          ],
-        },
-        {
-          label: 'Product Details',
-          fields: [
-            {
-              name: 'stripeProductID',
-              label: 'Stripe Product',
-              type: 'text',
-              admin: {
-                components: {
-                  Field: ProductSelect,
-                },
-              },
-            },
-            {
-              name: 'priceJSON',
-              label: 'Price JSON',
-              type: 'textarea',
-              admin: {
-                readOnly: true,
-                hidden: true,
-                rows: 10,
-              },
-            },
-            {
-              name: 'enablePaywall',
-              label: 'Enable Paywall',
-              type: 'checkbox',
-            },
-            {
-              name: 'paywall',
-              label: 'Paywall',
-              type: 'blocks',
-              access: {
-                read: checkUserPurchases,
-              },
-              blocks: [CallToAction, Content, MediaBlock, Archive],
-            },
-          ],
-        },
-      ],
-    },
-    {
       name: 'categories',
       type: 'relationship',
       relationTo: 'categories',
@@ -138,16 +75,32 @@ const Products: CollectionConfig = {
         position: 'sidebar',
       },
     },
-    { 
-      name: 'brand', 
-      type: 'relationship', 
-      relationTo: 'brands', 
-      hasMany: false, 
+    {
+      name: 'promotion',
+      type: 'relationship',
+      relationTo: 'promotions',
+      hasMany: false,
+      label: 'Promotion',
+    },
+    {
+      name: 'brand',
+      type: 'relationship',
+      relationTo: 'brands',
+      hasMany: false,
     },
     {
       name: 'price',
       type: 'number',
       required: true,
+    },
+    {
+      name: 'discountedPrice',
+      label: 'Discounted Price',
+      type: 'number',
+      admin: {
+        readOnly: true,
+        // hidden: true,
+      },
     },
     {
       name: 'relatedProducts',
