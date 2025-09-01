@@ -25,7 +25,7 @@ const Categories = ({ categories }: { categories: Category[] }) => {
       </div>
 
       <div className={classes.list}>
-        {shuffledCategories.map(category => (
+        {shuffledCategories?.map(category => (
           <CategoryCard key={category.id} category={category} />
         ))}
       </div>
